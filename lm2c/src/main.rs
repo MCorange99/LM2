@@ -28,7 +28,13 @@ fn main() -> Result<()>{
     let mut generator = generator::Generator::new(tokeniser.get_program());
     generator.generate();
 
+    if generator.size > 240 {
+        assembler_error("Binary size too big");
+        return Ok(());
+    }
+
     std::fs::write(cli_args.output, generator.get_bin())?;
+    // dbg!(generator.get_bin());
 
     Ok(())
 }

@@ -15,7 +15,7 @@ print:       ;  Print the string on the display
     sta print
     jmp print    ;Go to .Print
 print_ret:
-    rts
+    ret
 
 
 power:      ;  Calculate powers of 3 by doing repeated multiplication
@@ -35,10 +35,10 @@ power_loop:
 
 
 mult:    ; Calculate multiplication by doing repeated addition 
-    LDA 201
-    SUB 203      ; If the counter K>=B,then exit the function
-    JN Skip    ; Else skip
-    RTS
+    lda 201
+    sub 203      ; If the counter K>=B,then exit the function
+    jn skip    ; Else skip
+    ret
 skip:
     lda 202
     add 200      ; Result = Result + A
@@ -57,10 +57,8 @@ skip:
 ; B=203
 
 stop:
-    HLT
+    hlt
 
-string:
+section .rodata
 
-"Hi guys! This is"
-"my CPU! Now it's"
-"doing 3^x! =P <3"
+string: "Hi guys! This is my CPU! Now its doing 3^x! =P <3"
