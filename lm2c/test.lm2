@@ -1,0 +1,66 @@
+org 0x00        ; Start at memory address 0x00
+
+start:
+    call print    ; Main 
+    call power
+    hlt
+
+
+print:       ;  Print the string on the display
+    lda string
+    add 0xEF     ;  If the char is NULL,then exit the function
+    jz print_ret
+    PRT
+    inc print    ; Else print the char and String++
+    sta print
+    jmp print    ;Go to .Print
+print_ret:
+    rts
+
+
+power:      ;  Calculate powers of 3 by doing repeated multiplication
+    ldi 1
+    sta 200       ; Initialize the variables
+    ldi 3
+    sta 203
+power_loop:
+    jsr mult
+    lda 202
+    out        ; Output the result 
+    sta 200
+    ldi 0      ; Reset the variables 
+    sta 201
+    sta 202
+    jmp power_loop
+
+
+mult:    ; Calculate multiplication by doing repeated addition 
+    LDA 201
+    SUB 203      ; If the counter K>=B,then exit the function
+    JN Skip    ; Else skip
+    RTS
+skip:
+    lda 202
+    add 200      ; Result = Result + A
+    jo stop    ; If the result is bigger than 32767,then stop the program
+    sta 202
+    inc 201      ; K++
+    sta 201
+    jmp mult
+
+
+
+
+; A=200
+; K=201
+; C=202        ; Variables
+; B=203
+
+stop:
+    HLT
+
+string:
+
+"Hi guys! This is"
+"my CPU! Now it's"
+"doing 3^x! =P <3"
