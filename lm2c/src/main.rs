@@ -1,7 +1,9 @@
+use std::time::{Duration, Instant};
+
 use clap::Parser;
 
 use anyhow::Result;
-use common::assembler_error;
+use common::{assembler_error, assembler_info};
 
 
 mod args;
@@ -10,7 +12,7 @@ mod tokeniser;
 mod generator;
 
 fn main() -> Result<()>{
-
+    let start_time = Instant::now();
     let cli_args = args::Args::parse();
 
     let code = std::fs::read_to_string(&cli_args.src_file)?;
@@ -31,9 +33,13 @@ fn main() -> Result<()>{
     if generator.size > 240 {
         assembler_error("Binary size too big");
         return Ok(());
+    } else {
+        std::fs::write(cli_args.output, generator.get_bin())?;
+
+        let duration = start_time.elapsed();
+        assembler_info(format!("Compilation OK, took {}ms, bin size 480B", duration.as_millis()).as_str())
     }
 
-    std::fs::write(cli_args.output, generator.get_bin())?;
     // dbg!(generator.get_bin());
 
     Ok(())

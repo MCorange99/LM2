@@ -41,3 +41,13 @@ pub fn assembler_loc_warn(loc: &Loc, msg: &str) {
         reset=Color::RESET
     )
 }
+
+#[allow(dead_code)]
+pub fn assembler_info(msg: &str) {
+    println!("{bold}{green}info{reset}: {msg}", 
+        // underline=Color::UNDERLINE
+        bold=Color::BOLD,
+        green=Color::GREEN,
+        reset=Color::RESET
+    )
+}

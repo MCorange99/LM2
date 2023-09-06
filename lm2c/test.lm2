@@ -20,45 +20,49 @@ print_ret:
 
 power:      ;  Calculate powers of 3 by doing repeated multiplication
     ldi 1
-    sta 200       ; Initialize the variables
+    sta var_A       ; Initialize the variables
     ldi 3
-    sta 203
+    sta var_B
 power_loop:
     jsr mult
-    lda 202
+    lda var_C
     out        ; Output the result 
-    sta 200
+    sta var_A
     ldi 0      ; Reset the variables 
-    sta 201
-    sta 202
+    sta var_K
+    sta var_C
     jmp power_loop
 
 
 mult:    ; Calculate multiplication by doing repeated addition 
-    lda 201
-    sub 203      ; If the counter K>=B,then exit the function
+    lda var_K
+    sub var_B      ; If the counter K>=B,then exit the function
     jn skip    ; Else skip
     ret
 skip:
-    lda 202
-    add 200      ; Result = Result + A
+    lda var_C
+    add var_A      ; Result = Result + A
     jo stop    ; If the result is bigger than 32767,then stop the program
-    sta 202
-    inc 201      ; K++
-    sta 201
+    sta var_C
+    inc var_K      ; K++
+    sta var_K
     jmp mult
 
 
 
 
-; A=200
-; K=201
-; C=202        ; Variables
-; B=203
+; A=var_A
+; K=var_K
+; C=var_C        ; Variables
+; B=var_B
 
 stop:
     hlt
 
 section .rodata
+var_A: 0
+var_K: 0
+var_C: 0
+var_B: 0
 
 string: "Hi guys! This is my CPU! Now its doing 3^x! =P <3"

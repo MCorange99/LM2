@@ -53,7 +53,6 @@ impl Generator {
 
             match token.typ.clone() {
                 crate::common::TokenType::Operation(op) => {
-                    println!("{:?}", op);
                     self.size += 1;
                     match op {
                         crate::common::OpType::NOP => {
